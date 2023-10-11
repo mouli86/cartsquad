@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cartsquad',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'cartsquad',
         'USER': 'root',
-        'PASSWORD': 'root',
+        'PASSWORD': 'Meridian#123',
         'HOST':'127.0.0.1',
         'PORT':'3306',
     }
@@ -129,3 +130,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_REACT_FILES  =[ os.path.join(BASE_DIR,'cartsquad_ui/build/static')]
+
+# Set the custom user model
+AUTH_USER_MODEL = 'cartsquad.CustomUser'
