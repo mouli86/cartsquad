@@ -1,0 +1,11 @@
+{% extends 'homepage.html' %}
+{% block content %}
+<h1>Customer Registration Page</h1>
+<form method="post">
+    {% csrf_token %}
+    <table>
+        {{ retailer_registration_form.as_table }}
+    </table>
+    <button type="submit" value="Register">Register</button>
+</form>
+{% endblock %}
