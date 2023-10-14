@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CartSquad Homepage</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        {% include 'snippets/header.html' %}
+    </head>
+
+    <body>
+        <style = "text/css">
+            .main{
+                min-height: 100vh;
+                height: auto;
+            }
+        </style>
+        <div class = "main">
+        <h1 style="text-align: center;">Welcome to CartSquad</h1>
+            {% block content %}
+            {% endblock %}
+        </div>
+        {% include 'snippets/footer.html' %}
+    </body>
+
+</html>
