@@ -23,6 +23,7 @@ INSTALLED_APPS = [
 
     #Custom app
     'apps.accounts',
+    'apps.products',
 
     #OOTB apps
     'django.contrib.admin',
