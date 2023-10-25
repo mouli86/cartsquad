@@ -6,6 +6,105 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         {% include 'snippets/header.html' %}
+        <style>
+
+            .form-signin {
+              max-width: 330px;
+              padding: 15px;
+            }
+            
+            .form-signin .form-floating:focus-within {
+              z-index: 2;
+            }
+            
+            .form-signin input[type="email"] {
+              margin-bottom: -1px;
+              border-bottom-right-radius: 0;
+              border-bottom-left-radius: 0;
+            }
+            
+            .form-signin input[type="password"] {
+              margin-bottom: 10px;
+              border-top-left-radius: 0;
+              border-top-right-radius: 0;
+            }
+            .dropbtn {
+        background-color: transparent;
+        color: white;
+        padding: 6px;
+        font-size: 16px;
+        border: 1px solid #fff;
+        border-radius: 7px;
+    }
+    
+    .dropbtn:hover, .dropbtn:focus {
+      background-color: #2980B9;
+    }
+    
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f1f1f1;
+      min-width: 160px;
+      overflow: auto;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+    
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+    
+    .dropdown a:hover {background-color: #ddd;}
+    
+    .show {display: block;}
+            
+    .mySlides1, .mySlides2 {display: none}
+    img {vertical-align: middle;}
+    
+    /* Slideshow container */
+    .slideshow-container {
+      max-width: 1000px;
+      position: relative;
+      margin: auto;
+    }
+    
+    /* Next & previous buttons */
+    .prev, .next {
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      width: auto;
+      padding: 16px;
+      margin-top: -22px;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+      transition: 0.6s ease;
+      border-radius: 0 3px 3px 0;
+      user-select: none;
+    }
+    
+    /* Position the "next button" to the right */
+    .next {
+      right: 0;
+      border-radius: 3px 0 0 3px;
+    }
+    
+    /* On hover, add a grey background color */
+    .prev:hover, .next:hover {
+      background-color: #f1f1f1;
+      color: black;
+    }     
+            </style>
     </head>
 
     <body>
@@ -16,11 +115,69 @@
             }
         </style>
         <div class = "main">
-        <h1 style="text-align: center;">Welcome to CartSquad</h1>
+            <div class="slideshow-container">
+                <div class="mySlides1">
+                  <img src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/07810a5228bdffef.jpeg" style="width:100%">
+                </div>
+              
+                <div class="mySlides1">
+                  <img src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/8b3cccc8091bf789.jpg" style="width:100%">
+                </div>
+              
+                <div class="mySlides1">
+                  <img src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/2d46d868f6692aeb.jpg" style="width:100%">
+                </div>
+              
+                <a class="prev" onclick="plusSlides(-1, 0)">&#10094;</a>
+                <a class="next" onclick="plusSlides(1, 0)">&#10095;</a>
+              </div>
             {% block content %}
             {% endblock %}
         </div>
         {% include 'snippets/footer.html' %}
+
+        <script>
+            /* When the user clicks on the button, 
+            toggle between hiding and showing the dropdown content */
+            function myFunction() {
+              document.getElementById("myDropdown").classList.toggle("show");
+            }
+            
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function(event) {
+              if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                  var openDropdown = dropdowns[i];
+                  if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                  }
+                }
+              }
+            }
+            </script>
+            <script>
+                let slideIndex = [1,1];
+                let slideId = ["mySlides1", "mySlides2"]
+                showSlides(1, 0);
+                showSlides(1, 1);
+                
+                function plusSlides(n, no) {
+                  showSlides(slideIndex[no] += n, no);
+                }
+                
+                function showSlides(n, no) {
+                  let i;
+                  let x = document.getElementsByClassName(slideId[no]);
+                  if (n > x.length) {slideIndex[no] = 1}    
+                  if (n < 1) {slideIndex[no] = x.length}
+                  for (i = 0; i < x.length; i++) {
+                     x[i].style.display = "none";  
+                  }
+                  x[slideIndex[no]-1].style.display = "block";  
+                }
+                </script>
     </body>
 
 </html>
