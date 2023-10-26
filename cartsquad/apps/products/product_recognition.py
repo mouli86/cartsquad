@@ -50,11 +50,12 @@ cnn_model.fit(X_train, y_train, epochs=25, batch_size=256, validation_data=(X_va
 test_loss, test_accuracy = cnn_model.evaluate(X_test, y_test)
 print("Test Accuracy:", test_accuracy)
 
-# Save the model with a different name in .h5 format
-cnn_model.save("fashion_mnist_complex_model.h5")
-
-# Display the predicted label
-print("Predicted Label:", predicted_label)
+# Function to make predictions and return the predicted label
+def make_prediction_and_return_label(test_image):
+    # Make a prediction
+    y_pred = cnn_model.predict(np.expand_dims(test_image, axis=0)).round(2)
+    predicted_label = class_labels[np.argmax(y_pred[0])]
+    return predicted_label
 
 # Save the model
 with open("fashion_mnist_model.pkl", "wb") as model_file:
