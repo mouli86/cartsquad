@@ -1,57 +1,42 @@
-{% extends 'homepage.html' %}
+{% include 'snippets/header.html' %}
 {% block content %}
-<style>
+<div class="container">
+    <div class="row justify-content-center align-items-center vh-100"> 
+        <div class="col-md-6"> 
+            <div class="card mt-6 shadow">
+                <div class="card-body py-5">
+                    <h2 class="h3 mb-3 fw-normal text-center">Please sign in</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        <!-- Render each form field with Bootstrap styling -->
+                        {% for field in user_login_form %}
+                        <div class="form-group mb-3 text-center">
+                            <label for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
+                            {{ field }}
+                        </div>
+                        {% endfor %}
 
-.form-signin {
-  max-width: 330px;
-  padding: 15px;
-}
-
-.form-signin .form-floating:focus-within {
-  z-index: 2;
-}
-
-.form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-
-
-</style>
-<h1 style="align-self: center;">CartSquad Customer</h1>
-
-<main class="form-signin w-100 m-auto">
-    <h2 class="h3 mb-3 fw-normal">Please sign in</h2>
-    <form method="post">
-        {% csrf_token %}
-        <!-- Render each form field within the div with class "form-floating" -->
-        {% for field in user_login_form %}
-        <div class="form-floating">
-            <p>{{ field }}</p><label for="{{ field.id_for_label }}" placeholder="field.id_for_label" ></label>
+                        <!-- Render field errors -->
+                        {% for field in user_login_form %}
+                        {% for error in field.errors %}
+                        <p style="color: red">{{ error }}</p>
+                        {% endfor %}
+                        {% endfor %}
+                        <!-- Render non-field errors -->
+                        {% if user_login_form.non_field_errors %}
+                        <div class="alert alert-danger mb-3">
+                            {{ user_login_form.non_field_errors }}
+                        </div>
+                        {% endif %}
+                        <div class="text-center"> <!-- Center-align the button -->
+                            <button class="btn btn-lg btn-primary" type="submit">Sign in</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        {% endfor %}
-
-        <!-- Render field errors -->
-        {% for field in user_login_form %}
-        {% for error in field.errors %}
-        <p style="color: red">{{ error }}</p>
-        {% endfor %}
-        {% endfor %}
-        <!-- Render non-field errors -->
-        {% if user_login_form.non_field_errors %}
-        <div style="color: red;">
-            <p>{{ user_login_form.non_field_errors }}</p>
-        </div>
-        {% endif %}
-        <button class="btn btn-lg btn-primary" type="submit">Sign in</button>
-    </form>
-</main>
-
+    </div>
+</div>
 {% endblock %}
+
+{% include 'snippets/footer.html' %}
