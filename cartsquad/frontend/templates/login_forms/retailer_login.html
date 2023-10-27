@@ -16,15 +16,15 @@
         {% endfor %}
 
         <!-- Render field errors -->
-        {% for field in user_login_form %}
+        {% for field in retailer_login_form %}
             {% for error in field.errors %}
                 <p style="color: red">{{ error }}</p>
             {% endfor %}
         {% endfor %}
         <!-- Render non-field errors -->
-        {% if user_login_form.non_field_errors %}
+        {% if retailer_login_form.non_field_errors %}
         <div style="color: red;">
-            <p>{{ user_login_form.non_field_errors }}</p>
+            <p>{{ retailer_login_form.non_field_errors }}</p>
         </div>
         {% endif %}
         <button class="btn btn-lg btn-primary" type="submit">Sign in</button>

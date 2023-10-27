@@ -31,8 +31,12 @@ class UserLoginForm(forms.ModelForm):
         if self.is_valid():
             email = self.cleaned_data['email']
             password = self.cleaned_data['password']
-            if not authenticate(email = email, password = password):
+            user = authenticate(email = email, password = password)
+            if user is None:
                 raise forms.ValidationError("Please check your email and password and try again.")
+            elif user.is_retailer == 1:
+                raise forms.ValidationError("Please login through the retailer login form.")
+           
         
 #Retailer login form
 class RetailerLoginForm(forms.ModelForm):
