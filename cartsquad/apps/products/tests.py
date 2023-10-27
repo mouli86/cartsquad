@@ -57,6 +57,20 @@ def test_view_all_products():
 
     product_a = Product.objects.all(product_retailer_id = 1)
     product_a.count() == 1
+
+def test_view_all_products_sort_by_price(self):
+    response = self.client.get(reverse('view_all_products') + '?sort_by=price')
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(len(response.context['page_obj']), 2)
+    self.assertEqual(response.context['sort_by'], 'price')
+
+def test_view_all_products_sort_by_ratings(self):
+    response = self.client.get(reverse('view_all_products') + '?sort_by=ratings')
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(len(response.context['page_obj']), 2)
+    self.assertEqual(response.context['sort_by'], 'ratings')
+
+
     
 
     
