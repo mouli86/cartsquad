@@ -1,4 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 def index(request):
-    return render(request, 'index.html')
+	#To capture search query 
+    context = {}
+    query = ""
+    if request.GET:
+        query = request.GET['q']
+        context['query'] = str(query)
+    
+    return render(request, 'homepage.html')
+
+

@@ -1,0 +1,43 @@
+{% include 'snippets/header.html' %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center align-items-center" style="height: 100vh;">
+        <div class="col-md-6">
+            <div class="card  shadow"> <!-- Increased margin-top from "mt-5" to "mt-4" -->
+                <div class="card-body">
+                    
+                    <h2 class="h3 mb-4 fw-normal text-center">Retailer Sign In - Please sign in</h2>
+                    <form method="post" autocomplete="off">
+                        {% csrf_token %}
+                        <!-- Render each form field with Bootstrap styling -->
+                        {% for field in retailer_login_form %}
+                        <div class="form-group mb-3">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" value="{{ field.value }}" autocomplete="off">
+
+                        </div>
+                        {% endfor %}
+
+                        <!-- Render field errors -->
+                        {% for field in retailer_login_form %}
+                        {% for error in field.errors %}
+                        <p style="color: red">{{ error }}</p>
+                        {% endfor %}
+                        {% endfor %}
+                        <!-- Render non-field errors -->
+                        {% if retailer_login_form.non_field_errors %}
+                        <div style="color: red;">
+                            <p>{{ retailer_login_form.non_field_errors }}</p>
+                        </div>
+                        {% endif %}
+                        <div class="text-center mt-4">
+                            <button class="btn btn-lg btn-primary" type="submit">Sign in</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% include 'snippets/footer.html' %}

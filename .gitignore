@@ -1,1 +1,3 @@
-cartsquad_ui/node_modules/*
+cartsquad\cartsquad\__pycache__
+cartsquad\apps\accounts\__pycache__
+cartsquad\apps\products\__pycache__
