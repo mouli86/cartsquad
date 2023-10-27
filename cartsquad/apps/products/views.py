@@ -64,11 +64,18 @@ def view_all_products(request):
         messages.error(request, "You are not authorized to access this page.")
         return redirect('homepage')
     else:
+        sort_by = request.GET.get('sort_by', 'name')  # Default sorting by product name
         products = Product.objects.filter(product_retailer_id=request.user)
+
+        if sort_by == 'price':
+            products = products.order_by('product_price')
+        elif sort_by == 'ratings':
+            products = products.order_by('-product_rating')
+
         paginator = Paginator(products, 10)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-        return render(request, 'products/all.html', {'page_obj': page_obj})
+        return render(request, 'products/all.html', {'page_obj': page_obj, 'sort_by': sort_by})
 
 # This view will be used to search for products.
 def search_products(request):
