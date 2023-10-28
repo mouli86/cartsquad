@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import ProductForm
+from .forms import ProductForm, NewProductForm
 from .models import Product
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
@@ -8,23 +8,29 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 @login_required
 def add_product(request):
-    if not request.user.is_retailer:
+    user = request.user
+
+    if not user.is_authenticated:
         messages.error(request, "You are not authorized to access this page.")
         return redirect('homepage')
-    else:
-        if request.method == 'POST':
-            form = ProductForm(request.POST, request.FILES)
-            if form.is_valid():
-                #Not to save form before applying the reatiler id
-                form.save(commit = False)
-                form.product_retailer_id = request.user
-                form.save()
-                messages.success(request, "Product added successfully!")
-                return redirect('products')
-        else:
-            form = ProductForm()
-        return render(request, 'products/add.html', {'product_form': form})
 
+    if not user.is_retailer:
+        messages.error(request, "You are not authorized to access this page.")
+        return redirect('homepage')
+
+    form = NewProductForm(request.POST, request.FILES)
+    if form.is_valid():
+        # Create an instance of the product without saving it to the database yet
+        product = form.save(commit=False)
+        # Set the retailer of the product to the currently logged-in user
+        product.product_retailer_id = user
+        product.save()  
+        messages.success(request, "Product added successfully!")
+        product = NewProductForm()
+    context ={}
+    context['product_form']= form
+    return render(request, 'products/add.html', {'product_form': form})
+    
 @login_required 
 def update_product(request, product_id):
     if not request.user.is_retailer:
@@ -64,18 +70,19 @@ def view_all_products(request):
         messages.error(request, "You are not authorized to access this page.")
         return redirect('homepage')
     else:
-        sort_by = request.GET.get('sort_by', 'name')  # Default sorting by product name
-        products = Product.objects.filter(product_retailer_id=request.user)
-
+        sort_by = request.GET.get('sort_by', 'name') # Default sorting by product name
+        products = Product.objects.filter(product_retailer_id=request.user.user_id)
+        #Convert products to a list so that we can use it in the template need to pass paginator once fronend development us completew
         if sort_by == 'price':
-            products = products.order_by('product_price')
+         products = products.order_by('product_price')
         elif sort_by == 'ratings':
             products = products.order_by('-product_rating')
 
         paginator = Paginator(products, 10)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-        return render(request, 'products/all.html', {'page_obj': page_obj, 'sort_by': sort_by})
+        products = list(products)
+        return render(request, 'products/all.html', {'products': products})
 
 # This view will be used to search for products.
 def search_products(request):
@@ -93,6 +100,8 @@ def search_products(request):
     paginator = Paginator(products, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+	#Need to pass paginator once frontend is ready
+    page_obj = list(products)
     return render(request, 'products/results.html', {'page_obj': page_obj})
 
  

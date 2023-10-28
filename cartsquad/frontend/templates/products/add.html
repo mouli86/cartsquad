@@ -1,0 +1,12 @@
+
+<body>
+    <h1>Add New Product</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            {{ product_form.as_table }}
+        </table>
+        <button type="submit" value="Add">Add Product</button>
+    </form>
+</body>
+

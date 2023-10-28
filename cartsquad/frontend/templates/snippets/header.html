@@ -13,8 +13,8 @@
                 <li><a href = "{% url 'homepage' %}" class="nav-link px-2 text-white"><img src="https://user-images.githubusercontent.com/126706206/275121376-fb378225-0edf-44ec-915f-d1a8d2e3d899.png" width="100px"></a></li>
             </ul>
 
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..."
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" method = "get" style="width: 50%;" action="{% url 'products:search' %}">
+                <input type="search" class="form-control form-control-dark text-bg-dark" id = "query_id" name = "q" placeholder="Search..."
                     aria-label="Search">
             </form>
 

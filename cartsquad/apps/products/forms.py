@@ -17,16 +17,14 @@ class ProductForm(forms.ModelForm):
             'product_name': forms.TextInput(attrs={'class': 'form-control'}),
             'product_price': forms.NumberInput(attrs={'class': 'form-control'}),
             'product_description': forms.Textarea(attrs={'class': 'form-control'}),
-            'product_image' : forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'})),
+            'product_image': forms.FileInput(attrs={'class': 'form-control'}),
             'product_category': forms.TextInput(attrs={'class': 'form-control'}),
             'product_stock': forms.NumberInput(attrs={'class': 'form-control'}),
-            'product_rating': forms.NumberInput(attrs={'class': 'form-control'}),
             'product_brand': forms.TextInput(attrs={'class': 'form-control'}),
             'product_status': forms.CheckboxInput(attrs={'class': 'form-control'}),
             'product_discount': forms.NumberInput(attrs={'class': 'form-control'}),
             'product_discount_price': forms.NumberInput(attrs={'class': 'form-control'}),
-            'product_attributes': forms.TextInput(attrs={'class': 'form-control'}),
-            'product_retailer_id': forms.TextInput(attrs={'class': 'form-control'}),
+            # 'product_retailer_id': forms.TextInput(attrs={'class': 'form-control'}),
         }
         labels = {
             'product_name': 'Product Name',
@@ -40,14 +38,13 @@ class ProductForm(forms.ModelForm):
             'product_status': 'Product Status',
             'product_discount': 'Product Discount',
             'product_discount_price': 'Product Discount Price',
-            'product_attributes': 'Product Attributes',
             'product_retailer_id': 'Product Retailer ID',
         }
 
     
 
-        
-
-
-
-
+class NewProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['product_name', 'product_price', 'product_description', 'product_image',
+                  'product_category', 'product_stock', 'product_search_terms', 'product_brand', 'product_discount', 'product_discount_price']

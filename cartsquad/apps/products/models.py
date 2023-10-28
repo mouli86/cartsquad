@@ -10,16 +10,17 @@ class Product(models.Model):
     product_image = models.ImageField()
     product_category = models.CharField(max_length=50)
     product_stock = models.IntegerField()
-    product_rating = models.IntegerField()
-    product_reviews = models.JSONField()
+    product_rating = models.IntegerField(null=True, blank=True)
+    product_reviews = models.JSONField(null=True, blank=True)
     product_brand = models.CharField(max_length=50)
     product_date_added = models.DateField()
     product_date_modified = models.DateField()
     product_status = models.BooleanField()
     product_discount = models.IntegerField()
     product_discount_price = models.IntegerField()
-    # This field will have attributes of the product like color, size, etc. based on the product category.
-    product_attributes = models.JSONField()
+    # This field will have attributes of the product like color, size, etc. based on the product category AND has be integrated with ML model
+    product_attributes = models.JSONField(null=True, blank=True)
+
     product_search_terms = models.CharField(max_length=500)
 
     #to keep track of the retailer who added the product
@@ -42,7 +43,7 @@ class Product(models.Model):
         self.product_search_terms = self.product_name.lower()
         super(Product, self).save(*args, **kwargs)
 
-    def add_product(self, product_name, product_price, product_description, product_image, product_category, product_stock, product_rating, product_brand, product_retailer_id, product_search_terms):
+    def add_product(self, product_name, product_price, product_description, product_image, product_category, product_stock, product_brand, product_retailer_id, product_search_terms):
         self.product_name = product_name
         self.product_price = product_price
         self.product_description = product_description
@@ -62,7 +63,6 @@ class Product(models.Model):
         self.product_image = product_image
         self.product_category = product_category
         self.product_stock = product_stock
-        self.product_rating = product_rating
         self.product_brand = product_brand
         self.product_retailer_id = product_retailer_id
         self.product_search_terms = self.product_name + product_search_terms

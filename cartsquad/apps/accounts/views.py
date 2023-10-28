@@ -89,4 +89,25 @@ def retailer_login_view(request):
     
     return render(request, 'login_forms/retailer_login.html', {'retailer_login_form': form})
 
+def profile_view(request):
+    """This view is used to display the profile of the user."""
+    user = request.user
+    if user.is_authenticated:
+        user_profile = {
+
+            'first_name' : user.first_name,
+            'last_name' : user.last_name,
+            'email' : user.email,
+            'phone_number' : user.phone_number,
+            'date_of_birth' : user.date_of_birth,
+            'gender' : user.gender,
+            'id': user.user_id,
+            'address' : user.address,
+            'full_name' : user.full_name
+
+
+        }
+        return render(request, 'login_forms/profile.html', {'user_profile': user_profile})
+    else:
+        return redirect('homepage')
 
