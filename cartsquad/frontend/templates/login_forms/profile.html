@@ -1,0 +1,15 @@
+{% extends 'homepage.html' %}
+{% block content %}
+
+<main class="form-signin w-100 m-auto">
+{% csrf_token %}
+
+{% for key, value in user_profile.items %}
+    <div class="form-floating">
+        <p>{{ value }}</p>
+       
+    </div>
+{% endfor %}
+</main>
+
+{% endblock %}

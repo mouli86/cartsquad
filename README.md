@@ -59,5 +59,3 @@ Welcome to CartSquad, your go-to platform for collaborative online shopping. Car
 
 5. **Check Out:** Once you're done, proceed to the checkout.
 
-
-Feel free to modify this text to match your project's specifics and add any additional information or customization you need for your GitHub README file.
