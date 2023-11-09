@@ -74,6 +74,15 @@ class Account(AbstractBaseUser):
         self.full_name  = self.first_name + ' ' + self.last_name
         self.username = self.first_name
         super(Account, self).save(*args, **kwargs)
+    
+    class Order(models.Model):
+    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+    order_date = models.DateTimeField(default=timezone.now)
+    status = models.CharField(max_length=20, choices=[("Pending", "Pending"), ("Shipped", "Shipped"), ("Delivered", "Delivered")])
+    items = models.JSONField()
+
+    def __str__(self):
+    return "Order #" + str(self.pk) + " - " + str(self.user)
    
     def __str__(self):
         return self.username

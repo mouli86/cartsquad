@@ -6,6 +6,8 @@ from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from .models import Account
+from django.contrib.auth.decorators import login_required
+from .models import Order
 
 def customer_register(request):
     if request.method == 'POST':
@@ -110,4 +112,10 @@ def profile_view(request):
         return render(request, 'login_forms/profile.html', {'user_profile': user_profile})
     else:
         return redirect('homepage')
+
+
+@login_required
+def order_history(request):
+    orders = Order.objects.filter(user=request.user).order_by('-order_date')
+    return render(request, 'order_history.html', {'orders': orders})
 
