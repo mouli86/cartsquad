@@ -31,5 +31,25 @@ class TestProductRecognition(unittest.TestCase):
         expected_output = f'Actual = {class_labels[actual_label]} / Predicted = {class_labels[actual_label]}'
         self.assertIn(expected_output, cm.output)
 
+    def test_prediction_and_plot_sample3(self):
+        test_image = np.zeros((28, 28)) 
+        actual_label = 0  #Assume it's a T-shirt
+
+        with self.assertLogs() as cm:
+            make_prediction_and_plot(test_image, actual_label)
+
+        expected_output = f'Actual = {class_labels[actual_label]} / Predicted = {class_labels[actual_label]}'
+        self.assertIn(expected_output, cm.output)
+
+    def test_prediction_and_plot_sample4(self):
+        test_image = np.random.rand(28, 28) 
+        actual_label = 5  # Assume it is a sandle
+
+        with self.assertLogs() as cm:
+            make_prediction_and_plot(test_image, actual_label)
+
+        expected_output = f'Actual = {class_labels[actual_label]} / Predicted = {class_labels[actual_label]}'
+        self.assertIn(expected_output, cm.output)
+
 if __name__ == '__main__':
     unittest.main()
