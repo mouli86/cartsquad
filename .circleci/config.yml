@@ -18,15 +18,15 @@ jobs:
       - run:
           name: Run Migrations
           command: |
-            python manage.py migrate
+            python cartsquad/manage.py migrate
 
       # Run all Django tests
       - run:
           name: Run All Tests
           command: |
-            python manage.py test
-            python manage.py test apps.product.tests
-            python manage.py test apps.cart.tests
+            python cartsquad/manage.py test
+            python cartsquad/manage.py test apps.product.tests
+            python cartsquad/manage.py test apps.cart.tests
             
 
 workflows:
