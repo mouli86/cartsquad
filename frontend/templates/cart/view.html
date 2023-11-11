@@ -1,0 +1,47 @@
+{% include 'snippets/header.html' %}
+{% block content %}
+
+<body class="d-flex flex-column min-vh-100">
+<div class="container mt-5">
+    <h1 class="mb-4">Cart Items</h1>
+
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Brand</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if products %}
+            {% for product in products %}
+            <tr>
+                <td>{{ product.product_name }}</td>
+                <td>{{ product.product_category }}</td>
+                <td>{{ product.product_brand }}</td>
+                <td>{{ product.product_description }}</td>
+                <td>${{ product.product_price }}</td>
+                <td>
+                    <a href="#" class="btn btn-primary btn-sm">Edit</a>
+                    {% if product.product_id %}
+                        <a href="{% url 'delete_from_cart' product_id=product.product_id user_id=request.user.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="6" class="text-center">No products found.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+</body>
+
+{% endblock %}
+{% include 'snippets/footer.html' %}

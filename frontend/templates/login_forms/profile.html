@@ -1,0 +1,26 @@
+{% include 'snippets/header.html' %}
+{% block content %}
+
+<main class="my-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-title mb-4">Profile Details</h2>
+                        {% csrf_token %}
+                        {% for key, value in user_profile.items %}
+                            <div class="mb-3">
+                                <label class="form-label">{{ key|capfirst }}</label>
+                                <p class="form-control bg-light">{{ value }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}
+{% include 'snippets/footer.html' %}

@@ -1,0 +1,23 @@
+{% include 'snippets/header.html' %}
+{% block content %}
+
+<main class="form-signin w-100 m-auto">
+{% csrf_token %}
+
+<ul>
+    {% for product in page_obj %}
+        <li>
+            <h2>{{ product.product_name }}</h2>
+            <p>Category: {{ product.product_category }}</p>
+            <p>Brand: {{ product.product_brand }}</p>
+            <p>Description: {{ product.product_description }}</p>
+            <!-- Add any other fields you want to display -->
+        </li>
+    {% empty %}
+        <p>No products found.</p>
+    {% endfor %}
+</ul>
+</main>
+
+{% endblock %}
+{% include 'snippets/footer.html' %}
