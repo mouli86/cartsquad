@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     #Custom app
     'apps.accounts',
     'apps.products',
+    'apps.cart',
 
     #OOTB apps
     'django.contrib.admin',
@@ -128,3 +129,10 @@ STATIC_REACT_FILES  =[ os.path.join(BASE_DIR,'cartsquad_ui/build/static')]
 
 # Set the custom user model
 AUTH_USER_MODEL = 'accounts.Account'
+
+#Default media root
+IMAGE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MEDIA_ROOT = os.path.join(IMAGE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+
