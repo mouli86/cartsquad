@@ -26,6 +26,7 @@ def add_to_cart(request, product_id, quantity=1):
 def view_cart(request):
     user = request.user
     cart = Cart.objects.filter(cart_owner_id=user, cart_status=True, shared_cart=False)
+    cart.cart_total = 0.0
     cart_data = []
     if cart:
         cart = cart[0]

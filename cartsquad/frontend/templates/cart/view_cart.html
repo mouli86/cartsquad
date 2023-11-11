@@ -23,7 +23,8 @@
                 <td style="border: 1px solid #ddd; padding: 8px;">
                     <form method="post" action="{% url 'cart:update_quantity' product_id=item.product_id %}">
                         {% csrf_token %}
-                        <input type="number" id="quantity" name="quantity" value="{{ item.quantity }}" min="1" style="width: 50px;">
+                        <input type="number" id="quantity" name="quantity" value="{{ item.quantity }}" min="1"
+                            style="width: 50px;">
                         <button type="submit" class="btn btn-primary">Update</button>
                     </form>
                 </td>
@@ -38,7 +39,9 @@
         </tbody>
     </table>
     <br>
-    <h3>Total Cart Value: ${{ cart_total }}</h3> <!-- Use double curly braces to display the cart total -->
+    {% if cart_data %}
+        <h3>Total Cart Value: ${{ cart_total }}</h3> <br>
+    {% endif %}
     {% else %}
     <p>Your cart is empty.</p>
     {% endif %}
