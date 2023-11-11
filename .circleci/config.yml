@@ -4,9 +4,24 @@ jobs:
   build:
     docker:
       - image: python:3.8
+      - image: mysql:5.7
 
     steps:
       - checkout
+      environment:
+      MYSQL_DATABASE: cartsquad
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+
+   
+      # Set up MySQL database and user using environment variables
+      - run:
+          name: Set up MySQL
+          command: |
+            mysql -h 127.0.0.1 -u root -proot_password -e "CREATE DATABASE $MYSQL_DATABASE;"
+            mysql -h 127.0.0.1 -u root -proot_password -e "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
+            mysql -h 127.0.0.1 -u root -proot_password -e "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';"
+            mysql -h 127.0.0.1 -u root -proot_password -e "FLUSH PRIVILEGES;"
 
       # Install dependencies
       - run:
