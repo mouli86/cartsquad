@@ -13,12 +13,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Waiting for MySQL to be ready
-          command: |
-            while ! mysqladmin ping -h 127.0.0.1 -u user -ppassw0rd --silent; do
-              sleep 1
-            done
-      - run:
           name: Install project dependencies
           command: |
             pip install -r cartsquad/requirements.txt
