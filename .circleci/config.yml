@@ -20,8 +20,7 @@ jobs:
           name: Install MySQL CLI
           command: |
             apt-get update && apt-get install -y default-mysql-client
-            mysql -h 127.0.0.1 -u user -ppassw0rd cartsquad
-            mysql -h 127.0.0.1 -u user -ppassw0rd --execute="USE cartsquad;"
+            mysql -h 127.0.0.1 -u user -ppassw0rd --execute="USE cartsquad; SELECT 1;"
      
       - run:
           name: Run tests
