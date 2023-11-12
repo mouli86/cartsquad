@@ -25,8 +25,8 @@ jobs:
       - run:
           name: Run tests
           command: |
-            python cartsquad/manage.py apps.products.tests
-            python cartsquad/manage.py apps.carts.tests
+            python cartsquad/manage.py test apps.products.tests
+            python cartsquad/manage.py test apps.cart.tests
 
 
 workflows:
