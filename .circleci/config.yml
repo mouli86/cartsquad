@@ -15,10 +15,7 @@ jobs:
       - run:
           name: Waiting for MySQL to be ready
           command: |
-            apt-get install sudo
-            sudo apt update
-            sudo apt install sudo
-            sudo apt-get install netcat
+            pip install ncclient
             for i in `seq 1 10`;
             do
               nc -z 127.0.0.1 3306 && echo Success && exit 0
@@ -27,15 +24,15 @@ jobs:
             done
             echo Failed waiting for MySQL && exit 1
       - run:
-          name: Install MySQL CLI
-          command: |
-            sudo apt-get install default-mysql-client
-            mysql -h 127.0.0.1 -u user -ppassw0rd cartsquad
-            mysql -h 127.0.0.1 -u user -ppassw0rd --execute="USE cartsquad;"
-      - run:
           name: Install project dependencies
           command: |
             pip install -r cartsquad/requirements.txt
+      - run:
+          name: Install MySQL CLI
+          command: |
+            mysql -h 127.0.0.1 -u user -ppassw0rd cartsquad
+            mysql -h 127.0.0.1 -u user -ppassw0rd --execute="USE cartsquad;"
+     
       - run:
           name: Run tests
           command: |
