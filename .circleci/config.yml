@@ -15,7 +15,7 @@ jobs:
       - run:
           name: Waiting for MySQL to be ready
           command: |
-            dockerize -wait tcp://localhost:3306 -timeout 1m
+            while ! mysqladmin ping -h
       - run:
           name: Install project dependencies
           command: |
