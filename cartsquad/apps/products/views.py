@@ -58,8 +58,10 @@ def delete_product(request, product_id):
         messages.error(request, "You are not authorized to access this page.")
         return redirect('homepage')
     else:
+        
         product = Product.objects.get(product_id=product_id)
         product.delete()
+        print("Product deleted successfully!")
         messages.success(request, "Product deleted successfully!")
         return redirect('products')
 

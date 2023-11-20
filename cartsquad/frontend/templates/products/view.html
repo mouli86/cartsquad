@@ -1,1 +1,31 @@
-<h1>Product View Page</h1>
+{% include 'snippets/header.html' %}
+{% block content %}
+
+<main class="product-details" style="display: flex; padding: 20px;">
+
+    {% if product.product_image %}
+        <div class="product-image" style="flex: 1; max-width: 50%;">
+            <img src="{{ product.product_image.url }}" alt="{{ product.product_name }} Image" style="max-width: 100%; height: auto;">
+        </div>
+    {% endif %}
+
+    <div class="product-info" style="flex: 1; max-width: 50%;">
+        <h1>{{ product.product_name }}</h1>
+        <p style="font-style: italic;">Category: {{ product.product_category }}</p>
+        <p style="font-weight: bold;">Brand: {{ product.product_brand }}</p>
+        <p>{{ product.product_description }}</p>
+        <p style="color: #007BFF; font-size: 1.2em;">Price: ${{ product.product_price }}</p>
+        <p>Stock: {{ product.product_stock }}</p>
+
+        <form method="post" action="{% url 'cart:add_to_cart' product_id=product.product_id quantity=1 %}">
+            {% csrf_token %}
+            <button type="submit" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+                Add to Cart
+            </button>
+        </form>
+    </div>
+
+</main>
+
+{% endblock %}
+{% include 'snippets/footer.html' %}
