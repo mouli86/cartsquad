@@ -1,0 +1,42 @@
+{% include 'snippets/header.html' %}
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Shared Cart</title>
+    <!-- Add Bootstrap CSS -->
+    <style>
+        .user-input {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1>Create Shared Cart</h1>
+        <form method="post" enctype="multipart/form-data" id="create-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ shared_cart_form.cart_name.id_for_label }}">Cart Name:</label>
+                {{ shared_cart_form.cart_name }}
+            </div>
+            <div class="form-group">
+                <label for="{{ shared_cart_form.cart_description.id_for_label }}">Cart Description:</label>
+                {{ shared_cart_form.cart_description }}
+            </div>
+            <div id="user-input-container">
+                <div class="user-input">
+                    <h4><label for="{{ shared_cart_form.shared_with.id_for_label }}">Share With:</label></h4><br>
+                    <label for = "{{ shared_cart_form.shared_with.id_for_label }}" class="text-muted">Enter email addresses separated by semicolons (;)</label>
+                    {{ shared_cart_form.shared_with }}
+                </div>
+            </div>
+            <button type="submit" id="create-button" class="btn btn-success">Create</button>
+        </form>
+    </div>
+</body>
+{% endblock %}
+{% include 'snippets/footer.html' %}

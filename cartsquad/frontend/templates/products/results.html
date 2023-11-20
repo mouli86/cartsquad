@@ -1,22 +1,30 @@
-{% extends 'homepage.html' %}
+{% include 'snippets/header.html' %}
 {% block content %}
 
-<main class="form-signin w-100 m-auto">
-{% csrf_token %}
+<main class="container mt-5">
+    <h1 class="mb-4">Product Listing</h1>
 
-<ul>
-    {% for product in page_obj %}
-        <li>
-            <h2>{{ product.product_name }}</h2>
-            <p>Category: {{ product.product_category }}</p>
-            <p>Brand: {{ product.product_brand }}</p>
-            <p>Description: {{ product.product_description }}</p>
-            <!-- Add any other fields you want to display -->
-        </li>
-    {% empty %}
-        <p>No products found.</p>
-    {% endfor %}
-</ul>
+    <div class="list-group">
+        {% for product in page_obj %}
+            <a href="{% url 'products:view_product' product_id=product.product_id %}" class="list-group-item list-group-item-action">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img src="{{ product.product_image.url }}" alt="{{ product.product_name }}" class="img-fluid" style="width: 100%; height: auto">
+                    </div>
+                    <div class="col-md-9">
+                        <h5 class="mb-1">{{ product.product_name }}</h5>
+                        <p class="mb-1"><strong>Price: ${{ product.product_price }}</strong></p>
+                        <p class="mb-1">Category: {{ product.product_category }}</p>
+                        <p class="mb-1">{{ product.product_brand }}</p>
+                        <p class="mb-1">{{ product.product_description }}</p>
+                    </div>
+                </div>
+            </a>
+        {% empty %}
+            <p>No products found.</p>
+        {% endfor %}
+    </div>
 </main>
 
 {% endblock %}
+{% include 'snippets/footer.html' %}

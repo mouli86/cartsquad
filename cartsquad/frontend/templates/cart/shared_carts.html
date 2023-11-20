@@ -1,0 +1,104 @@
+{% include 'snippets/header.html' %}
+{% block content %}
+
+<body>
+    {% csrf_token %}
+    <h1>Shared Carts</h1>
+    <a href="{% url 'cart:new_shared_cart' %}" class="btn btn-primary"
+        style="text-decoration: none; border-radius: 5px; margin-left: 10px;">New Shared Cart</a>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shared Carts</title>
+    </head>
+
+    <body>
+        <section>
+            <h2>Owned Shared Carts</h2>
+            {% if shared_carts %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Cart Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cart in shared_carts %}
+                    <tr>
+                        <td>{{ cart.cart_name }}</td>
+                        <td>
+                            <a href="#" class="btn btn-success"
+                                style="text-decoration: none;">Modify</a>
+                            <a href="#" class="btn btn-danger"
+                                style="text-decoration: none; margin-left: 5px;">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No owned shared carts available.</p>
+            {% endif %}
+        </section>
+
+        <section>
+            <h2>Accepted Shared Carts</h2>
+            {% if accepted_shared_carts %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Cart Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cart in accepted_shared_carts %}
+                    <tr>
+                        <td>{{ cart.cart_name }}</td>
+                        <td>
+                            <a href="#" class="btn btn-success"
+                                style="text-decoration: none;">Modify</a>
+                            <a href="#" class="btn btn-danger"
+                                style="text-decoration: none; margin-left: 5px;">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No accepted shared carts available.</p>
+            {% endif %}
+        </section>
+
+        <section>
+            <h2>Pending Shared Carts</h2>
+            {% if pending_shared_carts %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Cart Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cart in pending_shared_carts %}
+                    <tr>
+                        <td>{{ cart.cart_name }}</td>
+                        <td>
+                            <a href="#" class="btn btn-success"
+                                style="text-decoration: none;">Accept</a>
+                            <a href="#" class="btn btn-danger"
+                                style="text-decoration: none; margin-left: 5px;">Ignore</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No pending shared carts available.</p>
+            {% endif %}
+        </section>
+
+    </body>
+{% endblock %}
+{% include 'snippets/footer.html' %}
