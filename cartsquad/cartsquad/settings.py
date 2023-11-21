@@ -77,7 +77,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'cartsquad',
         'USER': 'root',
-        'PASSWORD': 'root',
+        'PASSWORD': 'Meridian#123',
         'HOST':'127.0.0.1',
         'PORT':'3306',
     }
