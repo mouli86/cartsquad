@@ -1,1 +1,22 @@
-<h2>Orders History Page</h2>
+{% include 'snippets/header.html' %}
+{% block content %}
+
+<h2>Order History</h2>
+
+{% if orders %}
+    <ul>
+        {% for order in orders %}
+           <a href="{% url 'orders:view_order' order_id=order.order_id %}">Order ID: {{ order.order_id }}</a>
+              <p>Order Date: {{ order.order_date_created }}</p>
+                <p>Order Status: {{ order.status }}</p>
+                <p>Order Total: {{ order.order_total }}</p>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Your shopping history is empty!</p>
+{% endif %}
+
+{% endblock %}
+{% include 'snippets/footer.html' %}
+
+

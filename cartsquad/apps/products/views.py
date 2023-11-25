@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from apps.cart.models import Cart
 
 @login_required
 def add_product(request):
@@ -27,6 +28,7 @@ def add_product(request):
         product.save()  
         messages.success(request, "Product added successfully!")
         product = NewProductForm()
+        
     context ={}
     context['product_form']= form
     return render(request, 'products/add.html', {'product_form': form})
@@ -49,17 +51,24 @@ def update_product(request, product_id):
         return render(request, 'products/edit.html', {'product_form': form})
 
 def view_product(request, product_id):
+    user = request.user
     product = Product.objects.get(product_id=product_id)
-    return render(request, 'products/view.html', {'product': product})
+    accepted_shared_carts = Cart.objects.filter(
+        Q(shared_with__contains={user.user_id: {'accepted': 1}}) &
+        Q(cart_status=True) &
+        Q(shared_cart=True)
+    ).exclude(shared_with={user.user_id: {'accepted': 0}})
+    return render(request, 'products/view.html', {'product': product, 'shared_carts': accepted_shared_carts})
 
 @login_required
 def delete_product(request, product_id):
     if not request.user.is_retailer:
         messages.error(request, "You are not authorized to access this page.")
         return redirect('homepage')
-    else:
+    else: 
         product = Product.objects.get(product_id=product_id)
         product.delete()
+        print("Product deleted successfully!")
         messages.success(request, "Product deleted successfully!")
         return redirect('products')
 

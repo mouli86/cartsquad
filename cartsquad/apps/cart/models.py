@@ -35,7 +35,7 @@ class Cart(models.Model):
         self.cart_total = total
         self.save()
 
-    def save_to_cart(self, product_id, quantity=1):
+    def save_to_cart(self, product_id, user = '', comment = '', quantity=1):
         if not self.cart_products:
             self.cart_products = {}
 
@@ -49,6 +49,8 @@ class Cart(models.Model):
                 'name': product.product_name,
                 'price': float(product.product_price),
                 'quantity': quantity,
+                'added_by': user,
+                'comment': comment
             }
         
         self.update_cart_total()

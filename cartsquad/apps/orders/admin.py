@@ -11,5 +11,5 @@ class OrdersAdmin(admin.ModelAdmin):
     list_filter = ()
     fieldsets = ()
 
-admin.site.register(Orders, name = 'Order')
+admin.site.register(Orders, name = 'Order', admin_class = OrdersAdmin)
 

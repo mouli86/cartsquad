@@ -1,0 +1,44 @@
+{% include 'snippets/header.html' %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Left Column (70% of the screen width) -->
+        <div class="col-md-8">
+            {% for product_id, details in order.products.items %}
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <!-- Left Sub-Column (Image) -->
+                        <div class="col-md-4">
+                            <img src="{{ details.product_obj.product_image.url }}" alt="{{ details.product_obj.product_name }}" class="img-fluid"  style="width: 100%; height: auto">
+                        </div>
+                        <!-- Right Sub-Column (Product Details) -->
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ details.product_obj.product_name }}</h5>
+                                <p class="card-text">Quantity: {{ details.quantity }}</p>
+                                <p class="card-text">Price: ${{ details.price }}</p>
+                                <p class="card-text">Subtotal: ${{ details.sub_total }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Right Column (30% of the screen width) -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Order Summary</h5>
+                    <p class="card-text">Ordered: {{ order.order_date_created }}</p>
+                    <p class="card-text">Total Price: ${{ order.order_total }}</p>
+                    <!-- Add other order summary details as needed -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% include 'snippets/footer.html' %}
