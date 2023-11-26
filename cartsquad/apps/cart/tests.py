@@ -7,6 +7,7 @@ import datetime as dt
 
 class CartModelTest(TestCase):
     def setUp(self):
+        # Setting up test data, including a user, a retailer, and a product
         self.user = get_user_model().objects.create_user(
             email='testuser@g.com',
             password='testpass',
@@ -31,21 +32,23 @@ class CartModelTest(TestCase):
         )
 
     def test_cart_creation(self):
+        # Test creating a cart and ensuring the cart date is set
         cart = Cart.objects.create(
             cart_owner_id=self.user,
             cart_products={},
             cart_total=0.0
         )
-        
         self.assertIsNotNone(cart.cart_date_created)
 
     def test_add_to_cart(self):
+        # Test adding a product to the cart and updating the total
         cart = Cart.objects.create(cart_owner_id=self.user, shared_cart=False, cart_status=True, cart_total=0.0, cart_products={}, cart_date_created=dt.date.today())
         cart.save_to_cart(self.product.product_id, quantity=2)
         self.assertEqual(len(cart.cart_products), 1)
         self.assertEqual(cart.cart_total, 20.0)
 
     def test_remove_from_cart(self):
+        # Test removing a product from the cart and updating the total
         cart = Cart.objects.create(cart_owner_id=self.user, shared_cart=False, cart_status=True, cart_total=0.0, cart_products={}, cart_date_created=dt.date.today())
         cart.save_to_cart(self.product.product_id, quantity=2)
         cart.remove_from_cart(self.product.product_id)
@@ -53,18 +56,18 @@ class CartModelTest(TestCase):
         self.assertEqual(cart.cart_total, 0.0)
 
     def test_update_cart(self):
+        # Test updating the quantity of a product in the cart and updating the total
         cart = Cart.objects.create(cart_owner_id=self.user, shared_cart=False, cart_status=True, cart_total=0.0, cart_products={}, cart_date_created=dt.date.today())
         cart.save_to_cart(self.product.product_id, quantity=2)
         cart.update_cart(self.product.product_id, quantity=3)
         self.assertEqual(cart.cart_products[str(self.product.product_id)]['quantity'], 3)
         self.assertEqual(cart.cart_total, 30.0)
 
-    
     def tearDown(self) -> None:
         return super().tearDown()
 
-    
     def test_clear_cart(self):
+        # Test clearing the cart and ensuring the total is reset
         cart = Cart.objects.create(cart_owner_id=self.user, shared_cart=False, cart_status=True, cart_total=0.0, cart_products={}, cart_date_created=dt.date.today())
         cart.save_to_cart(self.product.product_id, quantity=2)
         cart.clear_cart()
@@ -72,13 +75,14 @@ class CartModelTest(TestCase):
         self.assertEqual(cart.cart_total, 0.0)
 
     def test_checkout_cart(self):
+        # Test checking out the cart and updating the cart status
         cart = Cart.objects.create(cart_owner_id=self.user, shared_cart=False, cart_status=True, cart_total=0.0, cart_products={}, cart_date_created=dt.date.today())
         cart.save_to_cart(self.product.product_id, quantity=2)
         cart.checkout()
         self.assertFalse(cart.cart_status)
 
     def test_shared_cart(self):
-        # Create two users and a shared cart
+        # Test creating a shared cart and ensuring the shared user has the same product
         user2 = get_user_model().objects.create_user(
             email='testuser2@g.com',
             password='testpass2',
