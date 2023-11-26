@@ -62,3 +62,35 @@ class CartModelTest(TestCase):
     
     def tearDown(self) -> None:
         return super().tearDown()
+
+    
+    def test_clear_cart(self):
+        cart = Cart.objects.create(cart_owner_id=self.user, shared_cart=False, cart_status=True, cart_total=0.0, cart_products={}, cart_date_created=dt.date.today())
+        cart.save_to_cart(self.product.product_id, quantity=2)
+        cart.clear_cart()
+        self.assertEqual(len(cart.cart_products), 0)
+        self.assertEqual(cart.cart_total, 0.0)
+
+    def test_checkout_cart(self):
+        cart = Cart.objects.create(cart_owner_id=self.user, shared_cart=False, cart_status=True, cart_total=0.0, cart_products={}, cart_date_created=dt.date.today())
+        cart.save_to_cart(self.product.product_id, quantity=2)
+        cart.checkout()
+        self.assertFalse(cart.cart_status)
+
+    def test_shared_cart(self):
+        # Create two users and a shared cart
+        user2 = get_user_model().objects.create_user(
+            email='testuser2@g.com',
+            password='testpass2',
+            date_of_birth=dt.date(1999, 1, 1))
+
+        cart = Cart.objects.create(cart_owner_id=self.user, shared_cart=True, cart_status=True, cart_total=0.0, cart_products={}, cart_date_created=dt.date.today())
+        cart.shared_with = [user2.id]
+        cart.save_to_cart(self.product.product_id, quantity=2)
+
+        # Check if the shared user has the same product in their cart
+        shared_user_cart = Cart.objects.filter(cart_owner_id=user2, shared_cart=True, cart_status=True)
+        self.assertTrue(shared_user_cart.exists())
+        shared_user_cart = shared_user_cart[0]
+        self.assertEqual(len(shared_user_cart.cart_products), 1)
+        self.assertEqual(shared_user_cart.cart_total, 20.0)
