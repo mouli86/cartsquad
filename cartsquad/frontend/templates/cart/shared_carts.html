@@ -4,8 +4,8 @@
     <div class="container mt-5">
         <h2 class="mb-4">Shared Carts</h2>
 
-        <a href="{% url 'cart:new_shared_cart' %}" class="btn btn-primary mb-3 text-decoration-none"
-            style="border-radius: 5px;">New Shared Cart</a>
+        <a href="{% url 'cart:new_shared_cart' %}" class="btn btn-primary mb-3"
+            style="text-decoration: none; border-radius: 5px;">New Shared Cart</a>
 
         <section>
             <!-- Owned Shared Carts -->
@@ -21,7 +21,7 @@
                     <tbody>
                         {% for cart in shared_carts %}
                             <tr>
-                                <td><a href="{% url 'cart:view_shared_cart' cart_id=cart.cart_id %}" class="text-decoration-none font-weight-bold">{{ cart.cart_name }}</a></td>
+                                <td><a href="{% url 'cart:view_shared_cart' cart_id=cart.cart_id %}" class="text-decoration-none">{{ cart.cart_name }}</a></td>
                                 <td>
                                     <a href="{% url 'cart:update_shared_cart' cart_id=cart.cart_id %}" class="btn btn-success btn-sm text-decoration-none"
                                         style="margin-left: 5px;">Modify</a>
@@ -74,12 +74,11 @@
                     <tbody>
                         {% for cart in pending_shared_carts %}
                             <tr>
-                                <td><a href="{% url 'cart:accept_shared_cart' cart_id=cart.cart_id %}" class="text-decoration-none">{{ cart.cart_name }}</a></td>
+                                <td>{{ cart.cart_name }}</td>
                                 <td>
-                                    <a href="{% url 'cart:accept_shared_cart' cart_id=cart.cart_id %}" class="btn btn-success btn-sm text-decoration-none"
-                                        style="margin-left: 5px;">Accept</a>
-                                    <a href="#" class="btn btn-danger btn-sm text-decoration-none"
-                                        style="margin-left: 5px;">Ignore</a>
+                                    <a href="{% url 'cart:accept_shared_cart' cart_id=cart.cart_id %}" class="btn btn-success btn-sm"
+                                        style="text-decoration: none;">Accept</a>
+                                   
                                 </td>
                             </tr>
                         {% endfor %}

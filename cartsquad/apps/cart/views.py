@@ -8,11 +8,9 @@ from django.contrib.auth.decorators import login_required
 from .forms import NewSharedCartForm
 from django.db.models import Q
 
-
 @login_required
 def add_to_cart(request, product_id, quantity=1):
     user = request.user
-
     # Get list of all active cart objects for the user
     cart = Cart.objects.filter(
         cart_owner_id=user, cart_status=True, shared_cart=False)
@@ -123,10 +121,8 @@ def create_shared_cart(request):
                 # check if the text is valid email
                 if Account.objects.filter(email=email).exists():
                     account_id = Account.objects.get(email=email).user_id
-                    print(account_id)
                     user_name = Account.objects.get(
                         email=email).first_name + " " + Account.objects.get(email=email).last_name
-                    print(user_name)
                     if account_id not in cart.shared_with:
                         cart.shared_with[account_id] = {
                             'email': email, 'accepted': 0, 'name': user_name}
@@ -253,6 +249,7 @@ def view_shared_cart(request, cart_id):
     """This function is used to view the shared cart."""
     user = request.user
     cart = Cart.objects.get(cart_id=cart_id)
+    can_checkout = True if cart.cart_owner_id == user else False
     cart_data = []
     if cart:
         if cart.cart_products in [None, {}]:
@@ -270,7 +267,7 @@ def view_shared_cart(request, cart_id):
                 'added_by': cart.cart_products[product_id]['added_by']
             })
         
-    return render(request, 'cart/view_shared_cart.html', {'cart_data': cart_data, 'cart_total': cart.cart_total, 'cart': cart.cart_id})
+    return render(request, 'cart/view_shared_cart.html', {'cart_data': cart_data, 'cart_total': cart.cart_total, 'cart': cart.cart_id, 'checkout': can_checkout})
 
 @login_required
 def remove_from_shared_cart(request, cart_id, product_id):

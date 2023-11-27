@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin
 from .models import Orders
 
 class OrdersAdmin(admin.ModelAdmin):
-    list_display = ('order_id', 'user_id', 'order_total', 'order_date_created', 'delivered')
+    list_display = ('order_id', 'user_id', 'shared_order','order_total', 'order_date_created', 'delivered')
     readonly_fields = ('order_id', 'order_date_created')
     filter_horizontal = ()
     list_filter = ()

@@ -33,6 +33,11 @@
                     <h5 class="card-title">Order Summary</h5>
                     <p class="card-text">Ordered: {{ order.order_date_created }}</p>
                     <p class="card-text">Total Price: ${{ order.order_total }}</p>
+                    <p class="card-text">Billing Address</p>
+                    <p>{{ order.billing_address }}</p>
+                    <p class="card-text">Shipping Address</p>
+                    <p>{{ order.shipping_address }}</p>
+                    <p class="card-text">Payment : {{ order.payment_method }}</p>
                     <!-- Add other order summary details as needed -->
                 </div>
             </div>

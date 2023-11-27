@@ -60,9 +60,12 @@
             more items</a>
         <!--Display below button only if we have cart data -->
         {% if cart_data %}
-        <a href="{% url 'orders:checkout' %}" class="button"
-            style="text-decoration: none; padding: 10px 20px; background-color: #008CBA; color: white; border-radius: 5px;">Proceed
-            to Checkout</a>
+            {% if checkout %}
+            <a href="{% url 'orders:checkout_shared_cart' cart_id=cart %}" class="button"
+                style="text-decoration: none; padding: 10px 20px; background-color: #008CBA; color: white; border-radius: 5px;">Proceed
+                to Checkout
+            </a>
+            {% endif %}
         {% endif %}
         <a href="{% url 'cart:shared_carts' %}" class="button"
             style="text-decoration: none; padding: 10px 20px; background-color: #3649f4; color: white; border-radius: 5px; margin-left: 10px;">View
