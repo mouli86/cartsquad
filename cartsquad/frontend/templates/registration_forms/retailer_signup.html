@@ -1,20 +1,91 @@
 {% include 'snippets/header.html' %}
 {% block content %}
-<div class="container">
-    <div class="row mt-4 justify-content-center align-items-center" style="height: 100vh;">
+<style>
+    .form-horizontal {
+         width: 100%;
+         margin: auto;
+         padding: 90px 70px 50px 70px;
+         background: rgba(40, 57, 101, 0.9);
+         box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+         border-radius: 5px;
+         color: #fff;
+         background-size: cover;
+     }
+ 
+     .group {
+         margin-bottom: 15px;
+     }
+ 
+     .label {
+         font-size: 22px;
+         color: #aaa;
+     }
+ 
+     .input {
+         width: 100%;
+         border: none;
+         padding: 15px 20px;
+         border-radius: 25px;
+         background: rgba(255, 255, 255, 0.1);
+         color: #fff;
+         display: block;
+     }
+ 
+     .button {
+         width: 100%;
+         border: none;
+         padding: 15px 20px;
+         border-radius: 25px;
+         background: #1161ee;
+         color: #fff;
+         display: block;
+         cursor: pointer;
+     }
+ 
+     .button:hover {
+         background: #0d50aa;
+     }
+     
+     .login-wrap{
+     min-height: 100%;
+     width:100%;
+     margin:auto;
+     max-width:525px;
+     /* min-height:670px; */
+     position:relative;
+     background:url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) no-repeat ;
+     box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+     background-size: cover; 
+     
+ }
+
+ input[type=checkbox] {
+    display: block;
+    margin-top: 10px;
+    margin-left: -187px;
+}
+     
+ </style>
+<div class="container py-5">
+    <div class="row mt-4 justify-content-center align-items-center">
         <div class="col-md-6">
             <div class="card shadow">
                 <div class="card-body">
                     <h1 class="text-center mb-4">Retailer Registration Page</h1>
-                    <form method="post">
+                    <div class="login-wrap">
+                    <form method="post" class="form-horizontal">
                         {% csrf_token %}
-                        <div class="form-group">
-                            {{ retailer_registration_form.as_p }}
+                        {% for field in retailer_registration_form %}
+                        <div class="group">
+                            <label class="label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
                         </div>
-                        <div class="text-center">
-                            <button class="btn btn-primary" type="submit">Register</button>
+                        {% endfor %}
+                        <div class="group">
+                            <button type="submit" class="button">Register</button>
                         </div>
                     </form>
+                  </div>
                 </div>
             </div>
         </div>
