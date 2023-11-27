@@ -1,17 +1,85 @@
 {% include 'snippets/header.html' %}
 {% block content %}
+<style>
+    body {
+        margin: 0;
+        color: #6a6f8c;
+        background: #c8c8c8;
+        font: 600 16px/18px 'Open Sans', sans-serif;
+    }
+
+    
+
+    .form-horizontal {
+        width: 100%;
+        margin: auto;
+        padding: 90px 70px 50px 70px;
+        background: rgba(40, 57, 101, 0.9);
+        box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+        border-radius: 5px;
+        color: #fff;
+        background-size: cover;
+    }
+
+    .group {
+        margin-bottom: 15px;
+    }
+
+    .label {
+        font-size: 22px;
+        color: #aaa;
+    }
+
+    .input {
+        width: 100%;
+        border: none;
+        padding: 15px 20px;
+        border-radius: 25px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        display: block;
+    }
+
+    .button {
+        width: 100%;
+        border: none;
+        padding: 15px 20px;
+        border-radius: 25px;
+        background: #1161ee;
+        color: #fff;
+        display: block;
+        cursor: pointer;
+    }
+
+    .button:hover {
+        background: #0d50aa;
+    }
+    
+    .login-wrap{
+    min-height: 100%;
+	width:100%;
+	margin:auto;
+	max-width:525px;
+	position:relative;
+	background:url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) ;
+	box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+    
+}
+</style>
+
 <div class="container">
-    <div class="row justify-content-center align-items-center vh-100"> 
-        <div class="col-md-6"> 
+    <div class="row justify-content-center align-items-center vh-100">
+        <div class="col-md-6">
             <div class="card mt-6 shadow">
                 <div class="card-body py-5">
                     <h2 class="h3 mb-3 fw-normal text-center">Please sign in</h2>
-                    <form method="post">
+                    <div class="login-wrap">
+                    <form method="post"class="form-horizontal">
                         {% csrf_token %}
                         <!-- Render each form field with Bootstrap styling -->
                         {% for field in user_login_form %}
-                        <div class="form-group mb-3 text-center">
-                            <label for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
+                        <div class="group">
+                            <label class = "label" for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
                             {{ field }}
                         </div>
                         {% endfor %}
@@ -28,15 +96,15 @@
                             {{ user_login_form.non_field_errors }}
                         </div>
                         {% endif %}
-                        <div class="text-center"> <!-- Center-align the button -->
-                            <button class="btn btn-lg btn-primary" type="submit">Sign in</button>
+                        <div class="group"> <!-- Center-align the button -->
+                            <button class="button" type="submit">Sign in</button>
                         </div>
                     </form>
+                 </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
-
 {% include 'snippets/footer.html' %}
