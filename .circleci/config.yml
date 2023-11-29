@@ -23,13 +23,13 @@ jobs:
           name: Install MySQL CLI
           command: |
             apt-get update && apt-get install -y default-mysql-client
-            mysql -h 127.0.0.1 -u root -p$MYSQL_ROOT_PASSWORD --execute="GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD'; FLUSH PRIVILEGES;"
+            mysql --batch --protocol=tcp -h 127.0.0.1 -u root -p$MYSQL_ROOT_PASSWORD --execute="GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD'; FLUSH PRIVILEGES;"
 
       # Test MySQL Connection
       - run:
           name: Test MySQL Connection
           command: |
-            mysql -h 127.0.0.1 -u root -p$MYSQL_ROOT_PASSWORD --execute="USE cartsquad; SELECT 1;"
+            mysql --batch --protocol=tcp -h 127.0.0.1 -u root -p$MYSQL_ROOT_PASSWORD --execute="USE cartsquad; SELECT 1;"
 
       # Run tests
       - run:
