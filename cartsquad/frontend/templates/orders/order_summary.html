@@ -1,6 +1,39 @@
 {% include 'snippets/header.html' %}
 {% block content %}
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f6f8fa;
+}
 
+h2 {
+    color: #24292e;
+    text-align: center;
+    padding: 20px 0;
+}
+
+p {
+    color: #586069;
+    margin-left: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin-left: 20px;
+}
+
+ul li {
+    padding: 5px 0;
+}
+
+p:last-child {
+    margin-bottom: 10px;
+}
+
+</style>
 <h2>Order Summary</h2>
 {% if order %}
     <p>Order ID: {{ order.order_id }}</p>
