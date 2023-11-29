@@ -1,5 +1,68 @@
 {% include 'snippets/header.html' %}
 {% block content %}
+<style>
+    
+@media (min-width: 768px) {
+    .col-md-6 {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin-bottom: 10%;
+}
+
+.card {
+    padding: 20px;
+    box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.1);
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    width: 30%;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.form-group input {
+    width: 70%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.register {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+}
+
+.checkbox-field input {
+    width: auto;
+}
+</style>
 <div class="container">
     <div class="row mt-4 justify-content-center align-items-center" style="height: 100vh;">
         <div class="col-md-6">
@@ -8,13 +71,18 @@
                     <h1 class="text-center mb-4">Retailer Registration Page</h1>
                     <form method="post">
                         {% csrf_token %}
-                        <div class="form-group">
-                            {{ retailer_registration_form.as_p }}
+                        {% for field in retailer_registration_form %}
+                        <div class="form-group{% if field.field.widget.input_type == 'checkbox' %} checkbox-field{% endif %}">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
                         </div>
+                        {% endfor %}
                         <div class="text-center">
                             <button class="btn btn-primary" type="submit">Register</button>
                         </div>
                     </form>
+                    
+                    
                 </div>
             </div>
         </div>
