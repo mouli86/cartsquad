@@ -18,23 +18,18 @@ jobs:
           command: |
             pip install -r cartsquad/requirements.txt
 
-      # Set MySQL password in a file
-      - run:
-          name: Set MySQL Password
-          command: echo -e "[client]\npassword=$MYSQL_ROOT_PASSWORD" > ~/.my.cnf
-
       # Install MySQL CLI and grant necessary permissions
       - run:
           name: Install MySQL CLI
           command: |
             apt-get update && apt-get install -y default-mysql-client
-            mysql --defaults-file=~/.my.cnf --protocol=tcp -h 127.0.0.1 -u root --execute="GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD'; FLUSH PRIVILEGES;"
+            mysql --protocol=tcp -h 127.0.0.1 -u root -ptestpassword --execute="GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'testpassword'; FLUSH PRIVILEGES;"
 
       # Test MySQL Connection
       - run:
           name: Test MySQL Connection
           command: |
-            mysql --defaults-file=~/.my.cnf --protocol=tcp -h 127.0.0.1 -u root --execute="USE cartsquad; SELECT 1;"
+            mysql --protocol=tcp -h 127.0.0.1 -u root -ptestpassword --execute="USE cartsquad; SELECT 1;"
 
       # Run tests
       - run:
