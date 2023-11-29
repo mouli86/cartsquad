@@ -8,6 +8,8 @@ jobs:
         environment:
           MYSQL_DATABASE: cartsquad
           MYSQL_ROOT_PASSWORD: testpassword
+          MYSQL_USER: root
+          MYSQL_PASSWORD: testpassword
           
     steps:
       - checkout
@@ -18,12 +20,12 @@ jobs:
           command: |
             pip install -r cartsquad/requirements.txt
 
-      # Install MySQL CLI and grant necessary permissions
+      # Install MySQL CLI, create user, and grant necessary permissions
       - run:
           name: Install MySQL CLI
           command: |
             apt-get update && apt-get install -y default-mysql-client
-            mysql --protocol=tcp -h 127.0.0.1 -u root -ptestpassword --execute="GRANT ALL PRIVILEGES ON cartsquad.* TO 'root'@'%' IDENTIFIED BY 'testpassword'; FLUSH PRIVILEGES;"
+            mysql --protocol=tcp -h 127.0.0.1 -u root -ptestpassword --execute="CREATE USER 'root'@'%'; GRANT ALL PRIVILEGES ON cartsquad.* TO 'root'@'%'; FLUSH PRIVILEGES;"
 
       # Test MySQL Connection
       - run:
