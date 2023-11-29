@@ -7,8 +7,7 @@ jobs:
       - image: cimg/mysql:8.0
         environment:
           MYSQL_DATABASE: cartsquad
-          MYSQL_USER: root
-          MYSQL_PASSWORD: your_database_password
+          MYSQL_ROOT_PASSWORD: testpassword
           
     steps:
       - checkout
@@ -24,13 +23,13 @@ jobs:
           name: Install MySQL CLI
           command: |
             apt-get update && apt-get install -y default-mysql-client
-            mysql -h 127.0.0.1 -u root -proot --execute="GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root'; FLUSH PRIVILEGES;"
+            mysql -h 127.0.0.1 -u root -p$MYSQL_ROOT_PASSWORD --execute="GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD'; FLUSH PRIVILEGES;"
 
       # Test MySQL Connection
       - run:
           name: Test MySQL Connection
           command: |
-            mysql -h 127.0.0.1 -u root -proot --execute="USE cartsquad; SELECT 1;"
+            mysql -h 127.0.0.1 -u root -p$MYSQL_ROOT_PASSWORD --execute="USE cartsquad; SELECT 1;"
 
       # Run tests
       - run:
