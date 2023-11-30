@@ -29,8 +29,10 @@ jobs:
           name: Run migrations
           command: |
             python cartsquad/manage.py makemigrations accounts
+            python cartsquad/manage.py migrate accounts
             python cartsquad/manage.py makemigrations products 
             python cartsquad/manage.py makemigrations cart 
+            python cartsquad/manage.py makemigrations orders
             python cartsquad/manage.py migrate
       # Run tests
       - run:
