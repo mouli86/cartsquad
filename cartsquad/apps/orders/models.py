@@ -4,7 +4,7 @@ import uuid
 
 class Orders(models.Model):
     order_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, auto_created=True)
-    user_id = models.ForeignKey('accounts.Account', on_delete=models.CASCADE, db_column='user_id')
+    user_id = models.ForeignKey('accounts.Account', on_delete=models.CASCADE)
     products = models.JSONField(null=True, blank=True)
     order_total = models.DecimalField(decimal_places=2, max_digits=10)
     order_date_created = models.DateField()
