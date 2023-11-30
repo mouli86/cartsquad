@@ -57,6 +57,7 @@ jobs:
       - run:
           name: Build Django image
           command: |
+            sudo service docker start
             docker compose up --build web
       # # Test Django application
       # - run:
