@@ -88,7 +88,7 @@ class OrdersTestCase(TestCase):
         response = self.client.get(reverse('orders:view_order_history', args=(101,)))
         self.assertTemplateUsed(response, 'orders/view.html')
 
-    # Test case for checking if an order is correctly displayed in the order history
+    # Test case for checking if an order is correctly displayed in order history
     def test_view_order_history_order_display(self):
         Orders.objects.create(
             order_id=3,
