@@ -64,3 +64,6 @@ def update_quantity(request, product_id):
         cart.save()
     return redirect('cart:view_cart')
 
+
+
+
