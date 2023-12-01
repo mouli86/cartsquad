@@ -1,14 +1,14 @@
 version: 2.1
 
 jobs:
-  build_and_test:
+  build:
     docker:
       - image: python:3.8
       - image: cimg/mysql:8.0
         environment:
           MYSQL_DATABASE: cartsquad
           MYSQL_ROOT_PASSWORD: testpassword
-      - image: docker:24.0.6
+          
     steps:
       - checkout
 
@@ -24,7 +24,6 @@ jobs:
           command: |
             apt-get update && apt-get install -y default-mysql-client
             mysql --protocol=tcp -h 127.0.0.1 -u root -ptestpassword --execute="USE cartsquad; SELECT 1;"
-
       # Run migrations
       - run:
           name: Run migrations
@@ -32,13 +31,9 @@ jobs:
             python cartsquad/manage.py makemigrations accounts
             python cartsquad/manage.py migrate accounts
             python cartsquad/manage.py makemigrations products 
-            python cartsquad/manage.py migrate products  
             python cartsquad/manage.py makemigrations cart 
-            python cartsquad/manage.py migrate cart  
             python cartsquad/manage.py makemigrations orders
-            python cartsquad/manage.py migrate orders  
             python cartsquad/manage.py migrate
-
       # Run tests
       - run:
           name: Run tests
@@ -46,37 +41,8 @@ jobs:
             python cartsquad/manage.py test apps.products.tests
             python cartsquad/manage.py test apps.cart.tests
 
-  deploy:
-    docker:
-      - image: docker:24.0.6
-
-    steps:
-      - checkout
-
-      # Build Django application image
-      - run:
-          name: Build Django image
-          command: |
-            docker compose up --build web
-      # # Test Django application
-      # - run:
-      #     name: Run Django tests
-      #     command: |
-      #       docker run -e DJANGO_DB_HOST=db -e DJANGO_DB_PORT=3306 -e DJANGO_DB_NAME=cartsquad -e DJANGO_DB_USER=root -e DJANGO_DB_PASSWORD=testpassword $DOCKER_HUB_USERNAME/cartsquad:latest \
-      #         python cartsquad/manage.py test apps.products.tests
-      #       docker run -e DJANGO_DB_HOST=db -e DJANGO_DB_PORT=3306 -e DJANGO_DB_NAME=cartsquad -e DJANGO_DB_USER=root -e DJANGO_DB_PASSWORD=testpassword $DOCKER_HUB_USERNAME/cartsquad:latest \
-      #         python cartsquad/manage.py test apps.cart.tests
-
-      # Push Django image to Docker Hub
-      - run:
-          name: Push Django image to Docker Hub
-          command: |
-            echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
-            docker push $DOCKER_HUB_USERNAME/cartsquad:{$CIRCLE_SHA1}
-
 workflows:
   version: 2
   build:
     jobs:
-      - build_and_test
-      - deploy
+      - build
