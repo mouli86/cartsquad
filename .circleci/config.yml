@@ -40,6 +40,7 @@ jobs:
           command: |
             python cartsquad/manage.py test apps.products.tests
             python cartsquad/manage.py test apps.cart.tests
+            python cartsquad/manage.py test apps.orders.tests
 
 workflows:
   version: 2
