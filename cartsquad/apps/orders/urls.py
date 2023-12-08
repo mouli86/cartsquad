@@ -7,9 +7,8 @@ app_name = 'orders'
 
 # Define URL patterns for the 'orders' app.
 urlpatterns = [
-    # URL pattern for viewing order history, using the user_id as a parameter.
-    path('view_order_history/<int:user_id>/', views.view_order_history, name='view_order_history'),
-
-    # URL pattern for adding to orders, using user_id and order_id as parameters.
-    path('add_to_orders/<int:user_id>/<int:order_id>/', views.add_to_orders, name='add_to_orders'),
+    path('view_order/<str:order_id>/', views.view_order, name='view_order'),
+    path('checkout/<int:cart_id>/', views.checkout, name='checkout_shared_cart'),
+    path('checkout/', views.checkout, name='checkout'),
+    path('order_history/', views.view_order_history, name='order_history'),
 ]

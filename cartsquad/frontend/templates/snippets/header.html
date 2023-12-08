@@ -49,6 +49,7 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
                         <li><a class="dropdown-item" href="{% url 'profile' %}">View Profile</a></li>
+                        <li><a class="dropdown-item" href="{% url 'orders:order_history' %}">View Orders</a></li>
                         <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                     </ul>
                 </div>
@@ -76,9 +77,8 @@
                 </div>
                 {% endif %}
             </div>
-            
-            
+
+
         </div>
     </div>
 </header>
-

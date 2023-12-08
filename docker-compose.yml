@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  # Django application
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: >
+      bash -c "python cartsquad/manage.py makemigrations accounts && \
+               python cartsquad/manage.py migrate && \
+               python cartsquad/manage.py makemigrations products && \
+               python cartsquad/manage.py makemigrations cart && \
+               python cartsquad/manage.py makemigrations orders && \
+               python cartsquad/manage.py migrate && \
+               python cartsquad/manage.py runserver 0.0.0.0:8000
+               "
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DJANGO_DB_HOST=db
+      - DJANGO_DB_PORT=3306
+      - DJANGO_DB_NAME=cartsquad
+      - DJANGO_DB_USER=root
+      - DJANGO_DB_PASSWORD=testpassword
+
+  # MySQL database
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: cartsquad
+      MYSQL_ROOT_PASSWORD: testpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

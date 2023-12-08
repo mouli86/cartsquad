@@ -5,15 +5,18 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from apps.cart.models import Cart
 
 @login_required
 def add_product(request):
     user = request.user
 
+    # Check if the user is authenticated
     if not user.is_authenticated:
         messages.error(request, "You are not authorized to access this page.")
         return redirect('homepage')
 
+    # Check if the user is a retailer
     if not user.is_retailer:
         messages.error(request, "You are not authorized to access this page.")
         return redirect('homepage')
@@ -27,6 +30,7 @@ def add_product(request):
         product.save()  
         messages.success(request, "Product added successfully!")
         product = NewProductForm()
+        
     context ={}
     context['product_form']= form
     return render(request, 'products/add.html', {'product_form': form})
@@ -49,16 +53,24 @@ def update_product(request, product_id):
         return render(request, 'products/edit.html', {'product_form': form})
 
 def view_product(request, product_id):
+    user = request.user
     product = Product.objects.get(product_id=product_id)
-    return render(request, 'products/view.html', {'product': product})
+
+    # Filter accepted shared carts for the current user
+    accepted_shared_carts = Cart.objects.filter(
+        Q(shared_with__contains={user.user_id: {'accepted': 1}}) &
+        Q(cart_status=True) &
+        Q(shared_cart=True)
+    ).exclude(shared_with={user.user_id: {'accepted': 0}})
+    
+    return render(request, 'products/view.html', {'product': product, 'shared_carts': accepted_shared_carts})
 
 @login_required
 def delete_product(request, product_id):
     if not request.user.is_retailer:
         messages.error(request, "You are not authorized to access this page.")
         return redirect('homepage')
-    else:
-        
+    else: 
         product = Product.objects.get(product_id=product_id)
         product.delete()
         print("Product deleted successfully!")
@@ -74,9 +86,10 @@ def view_all_products(request):
     else:
         sort_by = request.GET.get('sort_by', 'name') # Default sorting by product name
         products = Product.objects.filter(product_retailer_id=request.user.user_id)
-        #Convert products to a list so that we can use it in the template need to pass paginator once fronend development us completew
+        
+        # Sort products based on the selected sorting option
         if sort_by == 'price':
-         products = products.order_by('product_price')
+            products = products.order_by('product_price')
         elif sort_by == 'ratings':
             products = products.order_by('-product_rating')
 
@@ -102,8 +115,5 @@ def search_products(request):
     paginator = Paginator(products, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-	#Need to pass paginator once frontend is ready
     page_obj = list(products)
     return render(request, 'products/results.html', {'page_obj': page_obj})
-
- 

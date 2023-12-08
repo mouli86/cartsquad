@@ -1,0 +1,47 @@
+{% include 'snippets/header.html' %}
+{% block content %}
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-6">
+        <h2>Items in Cart</h2>
+        
+        <ul class ="list-group">
+          {% for product_id, product_data in cart.cart_products.items %}
+          <li class="list-group-item">
+           <h3> {{ product_data.name }}</h3> 
+            <i>Quantity: {{ product_data.quantity }}</i>
+            <br>
+            <muted>Total Price: ${{ product_data.price }} x {{ product_data.quantity }}</muted>
+          </li>
+          {% endfor %}
+        
+      </div>
+
+      <div class="col-md-6">
+        <h2>Checkout</h2>
+        <form method="post" action="{% if cart.cart_id %}{% url 'orders:checkout_shared_cart' cart_id=cart.cart_id %}{% else %}{% url 'orders:checkout' %}{% endif %}">
+          {% csrf_token %}
+
+          <div class="form-group">
+            {{ order_form.shipping_address.label_tag }}
+            <textarea class="form-control" rows="5" name="{{ order_form.shipping_address.name }}" id="{{ order_form.shipping_address.id_for_label }}">{{ order_form.shipping_address.value|default:'' }}</textarea>
+          </div>
+
+          <div class="form-group">
+            {{ order_form.billing_address.label_tag }}
+            <textarea class="form-control" rows="5" name="{{ order_form.billing_address.name }}" id="{{ order_form.billing_address.id_for_label }}">{{ order_form.billing_address.value|default:'' }}</textarea>
+          </div>
+
+          <div class="form-group">
+            {{ order_form.payment_method.label_tag }}
+            {{ order_form.payment_method }}
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-3">Place Order</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% include 'snippets/footer.html' %}

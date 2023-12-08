@@ -1,8 +1,7 @@
 {% include 'snippets/header.html' %}
 {% block content %}
-
 <body>
-    <h3>Personal Shoping Cart</h3>
+    <h1>{{ cart_data.cart_name }}</h1>
 
     {% if cart_data %}
     <table class="cart-table" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
@@ -18,7 +17,12 @@
         <tbody>
             {% for item in cart_data %}
             <tr>
-                <td style="border: 1px solid #ddd; padding: 8px;">{{ item.product_name }}</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">{{ item.product_name }}
+                    <br>
+                    <small>Added by {{ item.added_by }}</small>
+                    <br>
+                    <i>{{ item.comment }}</i>
+                </td>
                 <td style="border: 1px solid #ddd; padding: 8px;">${{ item.product_price }}</td>
                 <td style="border: 1px solid #ddd; padding: 8px;">
                     <form method="post" action="{% url 'cart:update_quantity' product_id=item.product_id %}">
@@ -30,7 +34,7 @@
                 </td>
                 <td style="border: 1px solid #ddd; padding: 8px;">${{ item.total_price }}</td>
                 <td style="border: 1px solid #ddd; padding: 8px;">
-                    <a href="{% url 'cart:remove_from_cart' product_id=item.product_id %}">
+                    <a href="{% url 'cart:remove_from_shared_cart' cart_id=cart product_id=item.product_id %}">
                         <button type="button" class="btn btn-danger">Remove</button>
                     </a>
                 </td>
@@ -42,18 +46,26 @@
     {% if cart_data %}
     <h3>Total Cart Value: ${{ cart_total }}</h3> <br>
     {% endif %}
+
     {% else %}
-    <p>Your cart is empty.</p>
+    <div class="empty-cart">
+        <h3>Empty Shared Cart.</h3>
+        <p>Explore our collection and start adding items to your cart.</p>
+    </div>
     {% endif %}
+
     <div style="display: flex; justify-content: center; margin-top: 20px;">
         <a href="{% url 'homepage' %}" class="button"
             style="text-decoration: none; padding: 10px 20px; background-color: #4CAF50; color: white; border-radius: 5px; margin-right: 10px;">Browse
             more items</a>
         <!--Display below button only if we have cart data -->
         {% if cart_data %}
-        <a href="{% url 'orders:checkout' %}" class="button"
-            style="text-decoration: none; padding: 10px 20px; background-color: #008CBA; color: white; border-radius: 5px;">Proceed
-            to Checkout</a>
+            {% if checkout %}
+            <a href="{% url 'orders:checkout_shared_cart' cart_id=cart %}" class="button"
+                style="text-decoration: none; padding: 10px 20px; background-color: #008CBA; color: white; border-radius: 5px;">Proceed
+                to Checkout
+            </a>
+            {% endif %}
         {% endif %}
         <a href="{% url 'cart:shared_carts' %}" class="button"
             style="text-decoration: none; padding: 10px 20px; background-color: #3649f4; color: white; border-radius: 5px; margin-left: 10px;">View

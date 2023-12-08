@@ -1,58 +1,81 @@
+import uuid
 from django.test import TestCase
 from django.urls import reverse
 from .models import Orders
 from .views import OrdersIterator
 from datetime import date
 from decimal import Decimal
+from django.contrib.auth import get_user_model
+from apps.cart.models import Cart
+from apps.accounts.models import Account
 
 class OrdersTestCase(TestCase):
-    # Setting up initial data for testing
     def setUp(self):
+        self.order1_id = uuid.uuid4()
+        self.order2_id = uuid.uuid4()
+        self.order3_id = uuid.uuid4()
+        self.user1 = Account.objects.create_user(
+            email="user1@cs.com",
+            password="user1password",
+            date_of_birth=date.today()
+        )
+        self.user2 = Account.objects.create_user(
+            email="user2@cs.com",
+            password="user2password",
+            date_of_birth=date.today()
+        )
         Orders.objects.create(
-            order_id=1,
-            user_id=101,
-            product_id=201,
-            quantity=3,
-            per_item_cost=Decimal('10.00'),
-            total_cost=Decimal('30.00')
+            #Create a new uuid for each order
+            order_id= self.order1_id,
+            order_date_created=date.today(),
+            order_total=Decimal('10.00'),
+            shipping_address="123 Main St",
+            billing_address="123 Main St",
+            delivered=False,
+            payment_method="Credit Card",
+            user_id=self.user1,
+            products=[{"product_id": "1", "quantity": 1}]
+        )
+        Orders.objects.create(
+            order_id=self.order2_id,
+            order_date_created=date.today(),
+            order_total=Decimal('20.00'),
+            shipping_address="123 Main St",
+            billing_address="123 Main St",
+            delivered=False,
+            payment_method="Debit Card",
+            user_id=self.user2,
+            products=[{"product_id": "2", "quantity": 2}]
+        )
+        Orders.objects.create(
+            order_id=self.order3_id,
+            order_date_created=date.today(),
+            order_total=Decimal('30.00'),
+            shipping_address="124 Main St",
+            billing_address="124 Main St",
+            delivered=False,
+            payment_method="Cash",
+            user_id=self.user1,
+            products=[{"product_id": "3", "quantity": 1}]
         )
 
-    # Test the __str__ method of the Orders model
-    def test_orders_model_str_method(self):
-        order = Orders.objects.get(order_id=1)
-        self.assertEqual(str(order), "201, 101, 1")
+    def test_orders(self):
+        """Orders are correctly identified"""
+        order1 = Orders.objects.get(order_id=self.order1_id)
+        order2 = Orders.objects.get(order_id=self.order2_id)
+        self.assertEqual(order1.order_total, Decimal('10.00'))
+        self.assertEqual(order2.order_total, Decimal('20.00'))
 
-    # Test the save method of the Orders model
-    def test_orders_model_save_method(self):
-        order = Orders.objects.get(order_id=1)
-        today = date.today()
-        self.assertEqual(order.product_date_modified, today)
-        self.assertEqual(order.product_date_added, today)
-        self.assertTrue(order.product_status)
-
-    # Test the custom iterator for Orders
     def test_orders_iterator(self):
-        orders = Orders.objects.all()
+        """Orders iterator returns correct number of orders"""
+        orders = Orders.objects.filter(user_id=self.user1)
         orders_iterator = OrdersIterator(orders)
-        result = [order for order in orders_iterator]
-        self.assertEqual(len(result), 1)
+        self.assertEqual(len(orders_iterator.orders), 2)
 
-    # Test the view_order_history view function
-    def test_view_order_history(self):
-        response = self.client.get(reverse('orders:view_order_history', args=(101,)))
+    def test_orders_view(self):
+        """Orders view returns correct number of orders for a user"""
+        self.client.login(email="user1@cs.com", password="user1password")
+        response = self.client.get(reverse('orders:order_history'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "201, 101, 1")
-
-    # Test the add_to_orders view function
-    def test_add_to_orders(self):
-        # Simulate a request to add an order to the cart
-        cart_response = self.client.get(reverse('orders:add_to_orders', args=(101, 1)))
-        self.assertEqual(cart_response.status_code, 200)
-
-        # Retrieve the added order from the database and check its attributes
-        order = Orders.objects.get(order_id=1)
-        self.assertEqual(order.user_id, 101)
-        self.assertEqual(order.product_id, 201)
-        self.assertEqual(order.quantity, 3)
-        self.assertEqual(order.per_item_cost, Decimal('10.00'))
-        self.assertEqual(order.total_cost, Decimal('30.00'))
+        self.assertEqual(len(response.context['orders'].orders), 2)
+    

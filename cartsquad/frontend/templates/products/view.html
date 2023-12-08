@@ -23,6 +23,46 @@
                 Add to Cart
             </button>
         </form>
+        <form method="post" id="addToSharedCartForm" action="">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="sharedCartSelect">Select Shared Cart:</label>
+                <select class="form-control" id="sharedCartSelect" name="shared_cart_id">
+                    {% for cart in shared_carts %}
+                        <option value="{{ cart.cart_id }}">{{ cart.cart_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <!-- Display a small text box (optional field) for comments -->
+            <div class="form-group">
+                <label for="comment">Add Comment (Optional):</label>
+                <textarea class="form-control" id="comment" name="comment"></textarea>
+            </div>
+            
+            <!-- Display Add to Shared Cart button -->
+            <button type="button" class="btn btn-primary" onclick="submitForm()">Add to Shared Cart</button>
+        </form>
+        
+        <script>
+            function submitForm() {
+                var selectedCartId = document.getElementById('sharedCartSelect').value;
+                var form = document.getElementById('addToSharedCartForm');
+                var comment = document.getElementById('comment').value || " ";
+                
+                // Update the form action with the selected cart ID and product ID
+                form.action = "{% url 'cart:add_to_shared_cart' cart_id=0 product_id=0 comment='dummy' %}"
+                    .replace('0', selectedCartId)
+                    .replace('0', '{{ product.product_id }}')
+                    .replace('dummy', comment);
+        
+                // Submit the form
+                form.submit();
+            }
+        </script>
+        
+
     </div>
 
 </main>

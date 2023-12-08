@@ -1,0 +1,94 @@
+{% include 'snippets/header.html' %}
+{% block content %}
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Shared Carts</h2>
+
+        <a href="{% url 'cart:new_shared_cart' %}" class="btn btn-primary mb-3"
+            style="text-decoration: none; border-radius: 5px;">New Shared Cart</a>
+
+        <section>
+            <!-- Owned Shared Carts -->
+            <h3 class="mb-3">Owned Shared Carts</h3>
+            {% if shared_carts %}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Cart Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cart in shared_carts %}
+                            <tr>
+                                <td><a href="{% url 'cart:view_shared_cart' cart_id=cart.cart_id %}" class="text-decoration-none">{{ cart.cart_name }}</a></td>
+                                <td>
+                                    <a href="{% url 'cart:update_shared_cart' cart_id=cart.cart_id %}" class="btn btn-success btn-sm text-decoration-none"
+                                        style="margin-left: 5px;">Modify</a>
+                                    <a href="{% url 'cart:delete_shared_cart' cart_id=cart.cart_id %}" class="btn btn-danger btn-sm text-decoration-none"
+                                        style="margin-left: 5px;">Delete</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-muted">No owned shared carts available.</p>
+            {% endif %}
+        </section>
+
+        <section>
+            <!-- Accepted Shared Carts -->
+            <h3 class="mb-3">Accepted Shared Carts</h3>
+            {% if accepted_shared_carts %}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Cart Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cart in accepted_shared_carts %}
+                            <tr>
+                                <td><a href="{% url 'cart:view_shared_cart' cart_id=cart.cart_id %}" class="text-decoration-none">{{ cart.cart_name }}</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-muted">No accepted shared carts available.</p>
+            {% endif %}
+        </section>
+
+        <section>
+            <!-- Pending Shared Carts -->
+            <h3 class="mb-3">Pending Shared Carts</h3>
+            {% if pending_shared_carts %}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Cart Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cart in pending_shared_carts %}
+                            <tr>
+                                <td>{{ cart.cart_name }}</td>
+                                <td>
+                                    <a href="{% url 'cart:accept_shared_cart' cart_id=cart.cart_id %}" class="btn btn-success btn-sm"
+                                        style="text-decoration: none;">Accept</a>
+                                   
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-muted">No pending shared carts available.</p>
+            {% endif %}
+        </section>
+    </div>
+</body>
+{% endblock %}
+{% include 'snippets/footer.html' %}

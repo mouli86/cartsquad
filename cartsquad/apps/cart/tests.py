@@ -25,7 +25,7 @@ class CartModelTest(TestCase):
             product_category="Test Category",
             product_stock=100,
             product_brand="Test Brand",
-            product_retailer_id=self.retailer, 
+            product_retailer_id=self.retailer,
             product_discount=0,
             product_discount_price=0
         )
@@ -59,6 +59,31 @@ class CartModelTest(TestCase):
         self.assertEqual(cart.cart_products[str(self.product.product_id)]['quantity'], 3)
         self.assertEqual(cart.cart_total, 30.0)
 
-    
     def tearDown(self) -> None:
         return super().tearDown()
+
+class CartViewTest(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            email='testuser@g.com',
+            password='testpass',
+            date_of_birth=dt.date(1999, 1, 1))
+
+        self.retailer = Account.objects.create_user(
+            email="retailer@g.com",
+            password="retailerpassword",
+            date_of_birth=dt.date(1999, 1, 1))
+
+        self.product = Product.objects.create(
+            product_name="Test Product",
+            product_price=10,
+            product_description="This is a test product",
+            product_image="test_image.jpg",
+            product_category="Test Category",
+            product_stock=100,
+            product_brand="Test Brand",
+            product_retailer_id=self.retailer,
+            product_discount=0,
+            product_discount_price=0
+        )
+    

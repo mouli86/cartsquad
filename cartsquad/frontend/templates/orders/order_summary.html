@@ -1,0 +1,21 @@
+{% include 'snippets/header.html' %}
+{% block content %}
+
+<h2>Order Summary</h2>
+{% if order %}
+    <p>Order ID: {{ order.order_id }}</p>
+    <p>Order Date: {{ order.date }}</p>
+    <p>Order Status: {{ order.status }}</p>
+    <p>Order Total: {{ order.order_total }}</p>
+    <p>Order Items:</p>
+    <ul>
+        {% for product_id, item in order.products.items %}
+            <li>{{ item.name }} - {{ item.quantity }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Order not found.</p>
+{% endif %}                                                                                                                       
+
+{% endblock %}
+{% include 'snippets/footer.html' %}

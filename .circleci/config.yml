@@ -7,27 +7,40 @@ jobs:
       - image: cimg/mysql:8.0
         environment:
           MYSQL_DATABASE: cartsquad
-          MYSQL_USER: user
-          MYSQL_PASSWORD: passw0rd
+          MYSQL_ROOT_PASSWORD: testpassword
           
     steps:
       - checkout
+
+      # Install project dependencies
       - run:
           name: Install project dependencies
           command: |
             pip install -r cartsquad/requirements.txt
+
+      # Test MySQL Connection
       - run:
-          name: Install MySQL CLI
+          name: Test MySQL Connection
           command: |
             apt-get update && apt-get install -y default-mysql-client
-            mysql -h 127.0.0.1 -u root -proot --execute="USE cartsquad; SELECT 1;"
-     
+            mysql --protocol=tcp -h 127.0.0.1 -u root -ptestpassword --execute="USE cartsquad; SELECT 1;"
+      # Run migrations
+      - run:
+          name: Run migrations
+          command: |
+            python cartsquad/manage.py makemigrations accounts
+            python cartsquad/manage.py migrate accounts
+            python cartsquad/manage.py makemigrations products 
+            python cartsquad/manage.py makemigrations cart 
+            python cartsquad/manage.py makemigrations orders
+            python cartsquad/manage.py migrate
+      # Run tests
       - run:
           name: Run tests
           command: |
             python cartsquad/manage.py test apps.products.tests
             python cartsquad/manage.py test apps.cart.tests
-
+            python cartsquad/manage.py test apps.orders.tests
 
 workflows:
   version: 2
