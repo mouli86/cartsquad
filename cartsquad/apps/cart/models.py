@@ -5,6 +5,30 @@ from apps.products.models import Product
 # Create your models here.
 
 class Cart(models.Model):
+    """
+    Represents a shopping cart.
+
+    Attributes:
+        cart_id (int): The unique identifier for the cart.
+        cart_products (dict): The products in the cart, stored as a dictionary.
+        cart_total (decimal): The total price of all products in the cart.
+        cart_date_created (date): The date when the cart was created.
+        cart_owner_id (ForeignKey): The foreign key to the owner of the cart.
+        shared_cart (bool): Indicates if the cart is shared with others.
+        shared_with (dict): The users with whom the cart is shared, stored as a dictionary.
+        cart_name (str): The name of the cart.
+        cart_description (str): The description of the cart.
+        cart_status (bool): Indicates if the cart is active or not.
+
+    Methods:
+        save(self, *args, **kwargs): Overrides the save method to set the cart_date_created.
+        update_cart_total(self): Updates the cart_total based on the products in the cart.
+        save_to_cart(self, product_id, user='', comment='', quantity=1): Adds a product to the cart.
+        remove_from_cart(self, product_id): Removes a product from the cart.
+        clear_cart(self): Clears all products from the cart.
+        checkout(self): Marks the cart as checked out.
+        update_cart(self, product_id, quantity): Updates the quantity of a product in the cart.
+    """
     cart_id = models.BigAutoField(primary_key=True)
     cart_products = models.JSONField(null=True, blank=True)
     cart_total = models.DecimalField(decimal_places=2, max_digits=10)
@@ -35,7 +59,7 @@ class Cart(models.Model):
         self.cart_total = total
         self.save()
 
-    def save_to_cart(self, product_id, user = '', comment = '', quantity=1):
+    def save_to_cart(self, product_id, user='', comment='', quantity=1):
         if not self.cart_products:
             self.cart_products = {}
 
@@ -78,5 +102,5 @@ class Cart(models.Model):
         else:
             return
         self.update_cart_total()
-        self.save()    
+        self.save()
         

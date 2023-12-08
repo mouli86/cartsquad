@@ -11,6 +11,7 @@ Welcome to CartSquad, your go-to platform for collaborative online shopping. Car
 - [Getting Started](#getting-started)
 - [Features](#features)
 - [How It Works](#how-it-works)
+- [Using Shared Carts](#using-shared-carts)
 
 ## Getting Started
 
@@ -29,6 +30,24 @@ Welcome to CartSquad, your go-to platform for collaborative online shopping. Car
 
 - Configure your database settings and other environment variables.
 - Make sure to update settings.py file with your desired DBMS
+- Install the required packages by running the following command:
+  ```shell
+  pip install -r requirements.txt
+  ```
+
+- Run the database migrations:
+  ```shell
+  python manage.py migrate accounts
+  python manage.py migrate products
+  python manage.py migrate carts
+  python manage.py migrate orders
+  ```
+- These migrations contain the models for the application and are dependent on each other. So, make sure to run them in the order specified above.
+
+- Migrate the database:
+  ```shell
+  python manage.py makemigrations
+  ```
 
 - Run the development server:
   ```shell
@@ -53,9 +72,23 @@ Welcome to CartSquad, your go-to platform for collaborative online shopping. Car
 
 2. **Create a Cart:** Start by creating a new shopping cart, name it, and add your desired products.
 
-3. **Invite Friends:** Invite your friends to join your cart by sending them an invitation link.
+3. **Invite Friends:** Invite your friends to join your cart by add their CartSquad email address while creating a new shared cart or updating an existing shared cart.
 
 4. **Shop Together:** Collaborate with your friends in real time. Everyone can add, remove, or comment on products.
 
 5. **Check Out:** Once you're done, proceed to the checkout.
+
+## Using Shared Carts
+
+- **Create a Shared Cart:** To create a shared cart, From cart page click on the "View Shared Cart" button and Select New Shared Cart Button. In shared cart page, enter the email address of the person you want to share the cart with sperated by semicolon(;) with Shared Cart Name and Description and click on the "Create Shared Cart" button.
+
+- **Update a Shared Cart:** To update a shared cart, From cart page click on the "View Shared Cart" button and Select Modify button next your shared carts and update the email address of the person you want to share the cart with sperated by semicolon(;) with Shared Cart Name and Description and click on the "Update" button.
+
+- **Delete a Shared Cart:** To delete a shared cart, From cart page click on the "View Shared Cart" button and Select Delete button next your shared carts and click on the "Delete" button.
+
+- **Join a Shared Cart:** To join a shared cart, from shared carts page,  select Accept button in Pending Shared Carts section.
+
+- **Viewing a Shared Cart:** To view a shared cart, from shared carts page, select Shared Cart Name in Active Shared Carts section. For viewing a shared cart, you must accept the shared cart and be invited to that cart.
+
+- **Checking Out a Shared Cart:** To checkout a shared cart, from cart summary page click on the "Checkout" button. For checking out a shared cart, you must be owner of the cart to do this.
 

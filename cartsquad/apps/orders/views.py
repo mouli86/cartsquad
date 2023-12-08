@@ -28,7 +28,7 @@ def view_order_history(request):
 @login_required
 def checkout(request, cart_id = None):
     user = request.user
-    #Pass shared cart id if it exists to the checkout view else pass the user id to get user personal cart
+    # Pass shared cart id if it exists to the checkout view else pass the user id to get user personal cart
     if cart_id is None:
         cart = Cart.objects.get(cart_owner_id=user, cart_status=True, shared_cart=False)
         order = Orders(user_id=user, products=cart.cart_products, order_total=cart.cart_total)
@@ -36,7 +36,7 @@ def checkout(request, cart_id = None):
         cart = Cart.objects.get(cart_id=cart_id)
         order = Orders(user_id=user, products=cart.cart_products, order_total=cart.cart_total, shared_order=True)
 
-        
+    
     order.order_date_created = dt.date.today()
     order_form = CheckOutForm(request.POST or None, instance=order)
     
@@ -58,6 +58,7 @@ def checkout(request, cart_id = None):
             order.save()
             cart.save()
             return redirect('orders:view_order', order_id=order.order_id)
+    
     return render(request, 'orders/checkout_form.html', {'order_form': order_form, 'cart': cart})
 
 
@@ -72,7 +73,6 @@ def view_order(request, order_id):
         products_list[i]['product_obj'] = product
         products_list[i]['price'] = order.products[i]['price']
         products_list[i]['quantity'] = order.products[i]['quantity']
-        products_list[i]['sub_total'] = order.products[i]['price'] * \
-            order.products[i]['quantity']
+        products_list[i]['sub_total'] = order.products[i]['price'] * order.products[i]['quantity']
     order.products = products_list
     return render(request, 'orders/view_order.html', {'order': order})
